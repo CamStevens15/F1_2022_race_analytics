@@ -10,11 +10,16 @@ The goal to see whether a given driver could potentially beat his competition gi
 To start we want to have a number of libraries pre installed, ideally in their own virtual environemnt to ensure no library dependencies will cause issue with the data analysis, i recommend using pip install "Your desired library", as it is the easiest to work with in the command line terminal.
 
 # Python Libraries
-- FastF1
-- Numpy
-- Pandas
-- Matplotlib
-- Seaborns
+
+- Can be found in the requierments.txt file for library dependencies needed to perform F1 Analysis through the respective APIs.
+
+
+
+# Races to be Analyzed
+
+- Bahrain GP 2022
+- Miami GP 2022
+- Monaco GP 2022
 
 
 
