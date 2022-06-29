@@ -1,8 +1,20 @@
+from matplotlib import pyplot as plt
+import numpy as np
+import pandas as pd
+
+import fastf1 as ff1
+from fastf1 import utils
+from fastf1.core import Laps
+from fastf1 import plotting
+
+def get_driver_from_session(session):
+    '''This function gets the respective driver from the session of intererst
+    from the fast f1 API.'''
+
 
 
 def driver_speed_change(driver1):
 
-    year = 2022
     
     colormap = plt.cm.plasma
 
@@ -48,3 +60,25 @@ def driver_speed_change(driver1):
 
     # Show the plot
     plt.show()
+
+
+
+def main():
+    # Setup plotting
+    plotting.setup_mpl()
+
+    # Enable the cache
+    ff1.Cache.enable_cache('/Users/cameronstevens/Documents/Coding/F1_2022_race_analytics/cache') 
+
+    # Get rid of some pandas warnings that are not relevant for us at the moment
+    pd.options.mode.chained_assignment = None 
+
+    # we only want support for timedelta plotting in this example
+    ff1.plotting.setup_mpl(mpl_timedelta_support=True, color_scheme=None, misc_mpl_mods=False)
+
+    #This loads the session for the Grand prix session of interest
+
+    year, grand_prix, session = 2022, '', ''
+
+    session = ff1.get_session(year, grand_prix, session)
+    session.load() # This is new with Fastf1 v.2.2
