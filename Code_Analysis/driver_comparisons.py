@@ -40,7 +40,7 @@ def main(year, grand_prix, session):
     # This is new with Fastf1 v.2.2
     
 
-def plot_driver_speed_change(year, grand_prix, driver1, session):
+def plot_driver_speed_change(driver1, session):
     
     colormap = plt.cm.plasma
 
@@ -56,7 +56,8 @@ def plot_driver_speed_change(year, grand_prix, driver1, session):
 
         # We create a plot with title and adjust some setting to make it look good.
     fig, ax = plt.subplots(sharex=True, sharey=True, figsize=(12, 6.75))
-    fig.suptitle(f'{grand_prix} {year} - {driver1} - Speed', size=24, y=0.97)
+    fig.suptitle(f'f"{session.event.year} {session.event.EventName} - {session.name} - {driver1} - Speed', size=24, y=0.97)
+
 
     # Adjust margins and turn of axis
     plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.12)
@@ -87,14 +88,14 @@ def plot_driver_speed_change(year, grand_prix, driver1, session):
     # Show the plot
     plt.show()
 
-def get_driver_lap_comparison(driver_1, driver_2, session):
+def get_driver_lap_comparison(driver1, driver2, session):
     
     '''This function is to take telementry data from each driver, and compare the respective
     lap times in regard to fastest lap time data.'''
 
     # Laps can now be accessed through the .laps object coming from the session
-    laps_driver_1 = session.laps.pick_driver(driver_1)
-    laps_driver_2 = session.laps.pick_driver(driver_2)
+    laps_driver_1 = session.laps.pick_driver(driver1)
+    laps_driver_2 = session.laps.pick_driver(driver2)
 
     # Select the fastest lap
     fastest_driver_1 = laps_driver_1.pick_fastest()
@@ -114,7 +115,7 @@ def get_driver_lap_comparison(driver_1, driver_2, session):
 
 
     plot_size = [15, 15]
-    plot_title = f"{session.event.year} {session.event.EventName} - {session.name} - {driver_1} VS {driver_2}"
+    plot_title = f"{session.event.year} {session.event.EventName} - {session.name} - {driver1} VS {driver2}"
     #plot_ratios = [1, 3, 2, 1, 1, 2]
     plot_ratios = [1, 3, 2, 1, 1, 2, 1, 2]
     plot_filename = plot_title.replace(" ", "") + ".png"
@@ -139,43 +140,43 @@ def get_driver_lap_comparison(driver_1, driver_2, session):
     # Delta line
     ax[0].plot(ref_tel['Distance'], delta_time)
     ax[0].axhline(0)
-    ax[0].set(ylabel=f"Gap to {driver_2} (s)")
+    ax[0].set(ylabel=f"Gap to {driver2} (s)")
 
     # Speed trace
-    ax[1].plot(telemetry_driver_1['Distance'], telemetry_driver_1['Speed'], label=driver_1, color=ff1.plotting.team_color(team_driver_1))
-    ax[1].plot(telemetry_driver_2['Distance'], telemetry_driver_2['Speed'], label=driver_2, color=ff1.plotting.team_color(team_driver_2))
+    ax[1].plot(telemetry_driver_1['Distance'], telemetry_driver_1['Speed'], label=driver1, color=ff1.plotting.team_color(team_driver_1))
+    ax[1].plot(telemetry_driver_2['Distance'], telemetry_driver_2['Speed'], label=driver2, color=ff1.plotting.team_color(team_driver_2))
     ax[1].set(ylabel='Speed')
     ax[1].legend(loc="lower right")
 
     # Throttle trace
-    ax[2].plot(telemetry_driver_1['Distance'], telemetry_driver_1['Throttle'], label=driver_1, color=ff1.plotting.team_color(team_driver_1))
-    ax[2].plot(telemetry_driver_2['Distance'], telemetry_driver_2['Throttle'], label=driver_2, color=ff1.plotting.team_color(team_driver_2))
+    ax[2].plot(telemetry_driver_1['Distance'], telemetry_driver_1['Throttle'], label=driver1, color=ff1.plotting.team_color(team_driver_1))
+    ax[2].plot(telemetry_driver_2['Distance'], telemetry_driver_2['Throttle'], label=driver2, color=ff1.plotting.team_color(team_driver_2))
     ax[2].set(ylabel='Throttle')
 
     # Brake trace
-    ax[3].plot(telemetry_driver_1['Distance'], telemetry_driver_1['Brake'], label=driver_1, color=ff1.plotting.team_color(team_driver_1))
-    ax[3].plot(telemetry_driver_2['Distance'], telemetry_driver_2['Brake'], label=driver_2, color=ff1.plotting.team_color(team_driver_2))
+    ax[3].plot(telemetry_driver_1['Distance'], telemetry_driver_1['Brake'], label=driver1, color=ff1.plotting.team_color(team_driver_1))
+    ax[3].plot(telemetry_driver_2['Distance'], telemetry_driver_2['Brake'], label=driver2, color=ff1.plotting.team_color(team_driver_2))
     ax[3].set(ylabel='Brake')
 
     # Gear trace
-    ax[4].plot(telemetry_driver_1['Distance'], telemetry_driver_1['nGear'], label=driver_1, color=ff1.plotting.team_color(team_driver_1))
-    ax[4].plot(telemetry_driver_2['Distance'], telemetry_driver_2['nGear'], label=driver_2, color=ff1.plotting.team_color(team_driver_2))
+    ax[4].plot(telemetry_driver_1['Distance'], telemetry_driver_1['nGear'], label=driver1, color=ff1.plotting.team_color(team_driver_1))
+    ax[4].plot(telemetry_driver_2['Distance'], telemetry_driver_2['nGear'], label=driver2, color=ff1.plotting.team_color(team_driver_2))
     ax[4].set(ylabel='Gear')
 
     # RPM trace
-    ax[5].plot(telemetry_driver_1['Distance'], telemetry_driver_1['RPM'], label=driver_1, color=ff1.plotting.team_color(team_driver_1))
-    ax[5].plot(telemetry_driver_2['Distance'], telemetry_driver_2['RPM'], label=driver_2, color=ff1.plotting.team_color(team_driver_2))
+    ax[5].plot(telemetry_driver_1['Distance'], telemetry_driver_1['RPM'], label=driver1, color=ff1.plotting.team_color(team_driver_1))
+    ax[5].plot(telemetry_driver_2['Distance'], telemetry_driver_2['RPM'], label=driver2, color=ff1.plotting.team_color(team_driver_2))
     ax[5].set(ylabel='RPM')
 
     # DRS trace
-    ax[6].plot(telemetry_driver_1['Distance'], telemetry_driver_1['DRS'], label=driver_1, color=ff1.plotting.team_color(team_driver_1))
-    ax[6].plot(telemetry_driver_2['Distance'], telemetry_driver_2['DRS'], label=driver_2, color=ff1.plotting.team_color(team_driver_2))
+    ax[6].plot(telemetry_driver_1['Distance'], telemetry_driver_1['DRS'], label=driver1, color=ff1.plotting.team_color(team_driver_1))
+    ax[6].plot(telemetry_driver_2['Distance'], telemetry_driver_2['DRS'], label=driver2, color=ff1.plotting.team_color(team_driver_2))
     ax[6].set(ylabel='DRS')
     ax[6].set(xlabel='Lap distance (meters)')
 
 
-    ax[7].plot(telemetry_driver_1['Distance'], telemetry_driver_1['Time'],  label=driver_1, color=ff1.plotting.team_color(team_driver_1))
-    ax[7].plot(telemetry_driver_2['Distance'], telemetry_driver_2['Time'], label=driver_2, color=ff1.plotting.team_color(team_driver_2))
+    ax[7].plot(telemetry_driver_1['Distance'], telemetry_driver_1['Time'],  label=driver1, color=ff1.plotting.team_color(team_driver_1))
+    ax[7].plot(telemetry_driver_2['Distance'], telemetry_driver_2['Time'], label=driver2, color=ff1.plotting.team_color(team_driver_2))
     ax[7].set(ylabel='Laptime', xlabel='Lap')
     ax[7].legend(loc="upper center")
 
