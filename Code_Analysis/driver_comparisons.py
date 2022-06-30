@@ -56,7 +56,7 @@ def plot_driver_speed_change(driver1, session):
 
         # We create a plot with title and adjust some setting to make it look good.
     fig, ax = plt.subplots(sharex=True, sharey=True, figsize=(12, 6.75))
-    fig.suptitle(f'f"{session.event.year} {session.event.EventName} - {session.name} - {driver1} - Speed', size=24, y=0.97)
+    fig.suptitle(f'{session.event.year} {session.event.EventName} - {session.name} - {driver1} - Speed', size=24, y=0.97)
 
 
     # Adjust margins and turn of axis
@@ -194,58 +194,72 @@ def get_driver_lap_comparison(driver1, driver2, session):
     
     plt.show()
 
+def fastest_lap_comparison(driverX, driverY, session):
+    
+   
 
-def get_driver_from_session(year, grand_prix, driver1, session):
-    '''This function gets the respective driver from the session of intererst
-    from the fast f1 API.'''
-    session = ff1.get_session(year, grand_prix, session)
-    session.load() # This is new with Fastf1 v.2.2
+    driver_X = session.laps.pick_driver(driverX).pick_fastest()
+    driver_Y = session.laps.pick_driver(driverY).pick_fastest()
+
+    driver_X = driver_X.get_car_data().add_distance()
+    driver_Y = driver_Y.get_car_data().add_distance()
+
+    driverX_color = ff1.plotting.team_color("RBR")
+    driverY_color = ff1.plotting.team_color("FER")
+
+    fig, ax = plt.subplots()
+    ax.plot(driver_X['Distance'], driver_X['Speed'], color=driverX_color, label=driverX)
+    ax.plot(driver_Y['Distance'], driver_Y['Speed'], color=driverY_color, label=driverY)
+
+    ax.set_xlabel('Distance in m')
+    ax.set_ylabel('Speed in km/h')
+
+    ax.legend()
+    plt.suptitle(f"Fastest Lap Comparison \n "
+                f"{session.event['EventName']} {session.event.year} QUALI")
+
+    plt.show()
+
+def driver_gear_changes(driver1, session):
+     # replace with your cache directory
+
+    colormap = plt.cm.plasma
 
     lap = session.laps.pick_driver(driver1).pick_fastest()
-    colormap = plt.cm.plasma
-    # Get telemetry data
-    x = lap.telemetry['X']              # values for x-axis
-    y = lap.telemetry['Y']              # values for y-axis
-    color = lap.telemetry['Speed']      # value to base color gradient on
+    tel = lap.get_telemetry()
+
+
+    x = np.array(tel['X'].values)
+    y = np.array(tel['Y'].values)
 
     points = np.array([x, y]).T.reshape(-1, 1, 2)
     segments = np.concatenate([points[:-1], points[1:]], axis=1)
-
-        # We create a plot with title and adjust some setting to make it look good.
-    fig, ax = plt.subplots(sharex=True, sharey=True, figsize=(12, 6.75))
-    fig.suptitle(f'{grand_prix} {year} - {driver1} - Speed', size=24, y=0.97)
-
-    # Adjust margins and turn of axis
-    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.12)
-    ax.axis('off')
+    gear = tel['nGear'].to_numpy().astype(float)
 
 
-    # After this, we plot the data itself.
-    # Create background track line
-    ax.plot(lap.telemetry['X'], lap.telemetry['Y'], color='black', linestyle='-', linewidth=16, zorder=0)
+    cmap = cm.get_cmap('Paired')
+    lc_comp = LineCollection(segments, norm=plt.Normalize(1, cmap.N+1), cmap=cmap)
+    lc_comp.set_array(gear)
+    lc_comp.set_linewidth(4)
 
-    # Create a continuous norm to map from data points to colors
-    norm = plt.Normalize(color.min(), color.max())
-    lc = LineCollection(segments, cmap=colormap, norm=norm, linestyle='-', linewidth=5)
+    plt.subplots(sharex=True, sharey=True, figsize=(12, 6.75))
+    
+    plt.gca().add_collection(lc_comp)
+    plt.axis('equal')
+    plt.tick_params(labelleft=False, left=False, labelbottom=False, bottom=False)
 
-    # Set the values used for colormapping
-    lc.set_array(color)
+    title = plt.suptitle(
+        f"Fastest Lap Gear Shift Visualization\n"
+        f"{driver1} - {session.event['EventName']} {session.event.year}")
 
-    # Merge all line segments together
-    line = ax.add_collection(lc)
-
-
-    # Finally, we create a color bar as a legend.
-    cbaxes = fig.add_axes([0.25, 0.05, 0.5, 0.05])
-    normlegend = mpl.colors.Normalize(vmin=color.min(), vmax=color.max())
-    legend = mpl.colorbar.ColorbarBase(cbaxes, norm=normlegend, cmap=colormap, orientation="horizontal")
-
-
-    # Show the plot
-    plt.show()
+        # Finally, we create a color bar as a legend.
+    cbar = plt.colorbar(mappable=lc_comp, label="Gear", boundaries=np.arange(1, 10))
+    cbar.set_ticks(np.arange(1.5, 9.5))
+    cbar.set_ticklabels(np.arange(1, 9))
+    
 
 
-
+    plt.show()  
 
 
 
