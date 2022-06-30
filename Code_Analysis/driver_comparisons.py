@@ -39,6 +39,49 @@ def main(year, grand_prix, session):
     return(session)
     # This is new with Fastf1 v.2.2
     
+def fastest_laptimes(session):
+    drivers = pd.unique(session.laps['Driver'])
+    print(drivers)
+
+    list_fastest_laps = list()
+    for drv in drivers:
+        drvs_fastest_lap = session.laps.pick_driver(drv).pick_fastest()
+        list_fastest_laps.append(drvs_fastest_lap)
+    fastest_laps = Laps(list_fastest_laps).sort_values(by='LapTime').reset_index(drop=True)
+
+    # plot is nicer to look at and more easily understandable if we just plot the time differences.
+    #  Therefore we subtract the fastest lap time from all other lap times.
+    pole_lap = fastest_laps.pick_fastest()
+    fastest_laps['LapTimeDelta'] = fastest_laps['LapTime'] - pole_lap['LapTime']
+
+    team_colors = list()
+    for index, lap in fastest_laps.iterlaps():
+        color = ff1.plotting.team_color(lap['Team'])
+        team_colors.append(color)
+
+
+    
+    fig, ax = plt.subplots(figsize=(12, 6.75))
+    ax.barh(fastest_laps.index, fastest_laps['LapTimeDelta'],
+            color=team_colors, edgecolor='grey')
+    ax.set_yticks(fastest_laps.index)
+    ax.set_yticklabels(fastest_laps['Driver'])
+
+    # show fastest at the top
+    ax.invert_yaxis()
+
+    # draw vertical lines behind the bars
+    ax.set_axisbelow(True)
+    ax.xaxis.grid(True, which='major', linestyle='--', color='black', zorder=-1000)
+
+    lap_time_string = strftimedelta(pole_lap['LapTime'], '%m:%s.%ms')
+
+    plt.suptitle(f"{session.event['EventName']} {session.event.year} \n"
+                f"Fastest Lap: {lap_time_string} ({pole_lap['Driver']})")
+
+    plt.show()
+
+
 
 def plot_driver_speed_change(driver1, session):
     
@@ -243,7 +286,7 @@ def driver_gear_changes(driver1, session):
     lc_comp.set_linewidth(4)
 
     plt.subplots(sharex=True, sharey=True, figsize=(12, 6.75))
-    
+
     plt.gca().add_collection(lc_comp)
     plt.axis('equal')
     plt.tick_params(labelleft=False, left=False, labelbottom=False, bottom=False)
