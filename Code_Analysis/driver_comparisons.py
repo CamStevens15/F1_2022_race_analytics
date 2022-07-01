@@ -234,6 +234,7 @@ def get_driver_lap_comparison(driver1, driver2, session):
 # Would be nice to have a conditional statement that ensures the colours are not the same
     if ff1.plotting.team_color(team_driver_1) == ff1.plotting.team_color(team_driver_2):
         print('Same Team Color')
+        color = ff1.plotting.team_color("RBR")
     
     plt.show()
 
