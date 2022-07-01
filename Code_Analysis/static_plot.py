@@ -2,7 +2,6 @@
 # import necessary packages
 
 from matplotlib import pyplot
-
 import matplotlib.pyplot as plt
 
 def static_track_temp(session):
