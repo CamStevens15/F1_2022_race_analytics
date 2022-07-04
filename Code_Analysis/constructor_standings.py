@@ -24,7 +24,7 @@ def ergast_retrieve(api_endpoint: str):
 
 def get_constructor_rankings():
     # Specify the number of rounds we want in our plot (in other words, specify the current round)
-    rounds = 8
+    rounds = int(input("Specify Round"))
 
     # Initiate an empty dataframe to store our data
     all_championship_standings = pd.DataFrame()
