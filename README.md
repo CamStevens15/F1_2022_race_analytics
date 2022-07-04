@@ -18,8 +18,13 @@ To start we want to have a number of libraries pre installed, ideally in their o
 # Races to be Analyzed
 
 - Bahrain GP 2022
+- Saudi GP 2022
+- Australian GP 2022
 - Miami GP 2022
+- Spanish GP 2022
 - Monaco GP 2022
+- Canadian GP
+- British GP 2022
 
 
 
