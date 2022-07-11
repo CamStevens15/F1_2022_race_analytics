@@ -231,8 +231,10 @@ def double_driver_lap_comparison(driver1, driver2, session):
     for a in ax.flat:
         a.label_outer()
         
+     #this gives appropriate name
+    name = plot_filename
     # Store figure
-    plt.savefig(plot_filename, dpi=300)
+    plt.savefig('GP_images/{}'.format(name), dpi=300)
 
 # Would be nice to have a conditional statement that ensures the colours are not the same
     if ff1.plotting.team_color(team_driver_1) == ff1.plotting.team_color(team_driver_2):
