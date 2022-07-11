@@ -40,7 +40,8 @@ def main(year, grand_prix, session):
     # This is new with Fastf1 v.2.2
     
 def fastest_laptimes(session):
-    """This will give you fastest lap times for a given session. Note: the code will break if a driver doesnt have a fastest lap"""
+    """This will give you fastest lap times for a given session. 
+    Note: the code will break if a driver doesnt have a fastest lap"""
     drivers = pd.unique(session.laps['Driver'])
     print(drivers)
 
@@ -84,7 +85,8 @@ def fastest_laptimes(session):
 
 
 
-def plot_driver_speed_change(driver1, session):
+def driver_speed_change(driver1, session):
+    """This will give you a visual of one drivers speed change over the course"""
     
     colormap = plt.cm.plasma
 
@@ -132,7 +134,7 @@ def plot_driver_speed_change(driver1, session):
     # Show the plot
     plt.show()
 
-def get_driver_lap_comparison(driver1, driver2, session):
+def double_driver_lap_comparison(driver1, driver2, session):
     
     '''This function is to take telementry data from each driver, and compare the respective
     lap times in regard to fastest lap time data.'''
