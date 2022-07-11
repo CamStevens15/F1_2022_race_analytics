@@ -40,6 +40,7 @@ def main(year, grand_prix, session):
     # This is new with Fastf1 v.2.2
     
 def fastest_laptimes(session):
+    """This will give you fastest lap times for a given session. Note: the code will break if a driver doesnt have a fastest lap"""
     drivers = pd.unique(session.laps['Driver'])
     print(drivers)
 

@@ -70,7 +70,7 @@ def get_constructor_rankings():
     fig, ax = plt.subplots()
 
     # Set the title of the plot
-    ax.set_title("2022 Championship Standings until round 8")
+    ax.set_title("2022 Championship Standings until round {rounds}")
 
     # Draw a line for every driver in the data by looping through all the standings
     # The reason we do it this way is so that we can specify the team color per driver
