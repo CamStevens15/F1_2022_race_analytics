@@ -15,7 +15,7 @@ from fastf1 import plotting
 from timple.timedelta import strftimedelta
 
 
-def main(year, grand_prix, session):
+def get_session(year, grand_prix, session):
     ''' This calls on the fastf1 api and creates a session based on year,
      grand prix, and session(Quali, race, sprint) wanted '''
     # Setup plotting
