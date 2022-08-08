@@ -188,7 +188,7 @@ def double_driver_lap_comparison(driver1, driver2, session):
     ax[1].plot(telemetry_driver_1['Distance'], telemetry_driver_1['Speed'], label=driver1, color=ff1.plotting.team_color(team_driver_1))
     ax[1].plot(telemetry_driver_2['Distance'], telemetry_driver_2['Speed'], label=driver2, color=ff1.plotting.team_color(team_driver_2))
     ax[1].set(ylabel='Speed')
-    #ax[1].legend(loc="lower right")
+    ax[1].legend(loc="lower right")
 
     # Throttle trace
     ax[2].plot(telemetry_driver_1['Distance'], telemetry_driver_1['Throttle'], label=driver1, color=ff1.plotting.team_color(team_driver_1))
