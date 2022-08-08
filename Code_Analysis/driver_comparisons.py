@@ -159,14 +159,11 @@ def double_driver_lap_comparison(driver1, driver2, session):
     delta_time, ref_tel, compare_tel = utils.delta_time(fastest_driver_1, fastest_driver_2)
 
 
-
     plot_size = [15, 15]
     plot_title = f"{session.event.year} {session.event.EventName} - {session.name} - {driver1} VS {driver2}"
     #plot_ratios = [1, 3, 2, 1, 1, 2]
     plot_ratios = [1, 3, 2, 1, 1, 2, 1, 2]
     plot_filename = plot_title.replace(" ", "") + ".png"
-
-
 
 
     # Make plot a bit bigger
@@ -182,7 +179,6 @@ def double_driver_lap_comparison(driver1, driver2, session):
     # Set the plot title
     ax[0].title.set_text(plot_title)
 
-
     # Delta line
     ax[0].plot(ref_tel['Distance'], delta_time)
     ax[0].axhline(0)
@@ -192,7 +188,7 @@ def double_driver_lap_comparison(driver1, driver2, session):
     ax[1].plot(telemetry_driver_1['Distance'], telemetry_driver_1['Speed'], label=driver1, color=ff1.plotting.team_color(team_driver_1))
     ax[1].plot(telemetry_driver_2['Distance'], telemetry_driver_2['Speed'], label=driver2, color=ff1.plotting.team_color(team_driver_2))
     ax[1].set(ylabel='Speed')
-    ax[1].legend(loc="lower right")
+    #ax[1].legend(loc="lower right")
 
     # Throttle trace
     ax[2].plot(telemetry_driver_1['Distance'], telemetry_driver_1['Throttle'], label=driver1, color=ff1.plotting.team_color(team_driver_1))
@@ -239,9 +235,45 @@ def double_driver_lap_comparison(driver1, driver2, session):
 # Would be nice to have a conditional statement that ensures the colours are not the same
     if ff1.plotting.team_color(team_driver_1) == ff1.plotting.team_color(team_driver_2):
         print('Same Team Color')
-        ff1.plotting.team_color(team_driver_1) == ff1.plotting.team_color("RBR")
-        ff1.plotting.team_color(team_driver_2) == ff1.plotting.team_color("FER")
         
+        # Speed trace
+        ax[1].plot(telemetry_driver_1['Distance'], telemetry_driver_1['Speed'], label=driver1, color=ff1.plotting.team_color("RBR"))
+        ax[1].plot(telemetry_driver_2['Distance'], telemetry_driver_2['Speed'], label=driver2, color=ff1.plotting.team_color("FER"))
+        ax[1].set(ylabel='Speed')
+        ax[1].legend(loc="lower left")
+
+          # Throttle trace
+        ax[2].plot(telemetry_driver_1['Distance'], telemetry_driver_1['Throttle'], label=driver1, color=ff1.plotting.team_color("RBR"))
+        ax[2].plot(telemetry_driver_2['Distance'], telemetry_driver_2['Throttle'], label=driver2, color=ff1.plotting.team_color("FER"))
+        ax[2].set(ylabel='Throttle')
+
+        # Brake trace
+        ax[3].plot(telemetry_driver_1['Distance'], telemetry_driver_1['Brake'], label=driver1, color=ff1.plotting.team_color("RBR"))
+        ax[3].plot(telemetry_driver_2['Distance'], telemetry_driver_2['Brake'], label=driver2, color=ff1.plotting.team_color("FER"))
+        ax[3].set(ylabel='Brake')
+
+        # Gear trace
+        ax[4].plot(telemetry_driver_1['Distance'], telemetry_driver_1['nGear'], label=driver1, color=ff1.plotting.team_color("RBR"))
+        ax[4].plot(telemetry_driver_2['Distance'], telemetry_driver_2['nGear'], label=driver2, color=ff1.plotting.team_color("FER"))
+        ax[4].set(ylabel='Gear')
+
+        # RPM trace
+        ax[5].plot(telemetry_driver_1['Distance'], telemetry_driver_1['RPM'], label=driver1, color=ff1.plotting.team_color("RBR"))
+        ax[5].plot(telemetry_driver_2['Distance'], telemetry_driver_2['RPM'], label=driver2, color=ff1.plotting.team_color("FER"))
+        ax[5].set(ylabel='RPM')
+
+        # DRS trace
+        ax[6].plot(telemetry_driver_1['Distance'], telemetry_driver_1['DRS'], label=driver1, color=ff1.plotting.team_color("RBR"))
+        ax[6].plot(telemetry_driver_2['Distance'], telemetry_driver_2['DRS'], label=driver2, color=ff1.plotting.team_color("FER"))
+        ax[6].set(ylabel='DRS')
+        ax[6].set(xlabel='Lap distance (meters)')
+
+
+        ax[7].plot(telemetry_driver_1['Distance'], telemetry_driver_1['Time'],  label=driver1, color=ff1.plotting.team_color("RBR"))
+        ax[7].plot(telemetry_driver_2['Distance'], telemetry_driver_2['Time'], label=driver2, color=ff1.plotting.team_color("FER"))
+        ax[7].set(ylabel='Laptime', xlabel='Lap')
+        ax[7].legend(loc="upper center")
+            
     
     plt.show()
 
